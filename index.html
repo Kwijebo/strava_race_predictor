@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strava App Authorization</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
+    <title>Strava Authorization</title>
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                code: params.get('code'),
+                scope: params.get('scope'),
+                state: params.get('state')
+            };
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        function redirectToLocalServer(params) {
+            const localServerUrl = `http://localhost:5000/exchange_token?code=${params.code}`;
+            window.location.href = localServerUrl;
         }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-    </style>
+
+        window.onload = function() {
+            const params = getQueryParams();
+            if (params.code) {
+                redirectToLocalServer(params);
+            } else {
+                document.body.innerHTML = '<p>No authorization code found.</p>';
+            }
+        };
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Strava App Authorization</h1>
-        <p>Your site is set up correctly. You can use this page to handle OAuth redirects from Strava.</p>
-    </div>
+    <p>Authorizing...</p>
 </body>
 </html>
